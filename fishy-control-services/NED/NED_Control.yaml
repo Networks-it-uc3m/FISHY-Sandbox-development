@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: ned-fishy-control
   annotations:
-    k8s.v1.cni.cncf.io/networks: vhostiro@iro, vhostscm@scm, vhosttm@tm, vxlan1@vxlan
+    k8s.v1.cni.cncf.io/networks: vhostiro@iro, vhostscm@scm, vhosttm@tm, vxlan1@vxlan-domain1, vxlan3@vxlan-domain2
 spec:
   containers: 
   - name: ned-fishy-control
