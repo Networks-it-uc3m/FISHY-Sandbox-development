@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-world
+  annotations:
+    k8s.v1.cni.cncf.io/networks: vdatapod1@data, vctrlpod1@ctrl
+spec:
+  containers: 
+  - name: hello-world
+    command: ["/bin/ash", "-c", "trap : TERM INT; sleep infinity & wait"]
+    image: alpine
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN"]
