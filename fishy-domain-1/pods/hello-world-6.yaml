@@ -3,11 +3,11 @@ kind: Pod
 metadata:
   name: hello-world-6
   annotations:
-    k8s.v1.cni.cncf.io/networks: vdatapod6@data, vctrlpod6@ctrl
+    k8s.v1.cni.cncf.io/networks: vdatapod6@data, vmgmtpod6@mgmt
 spec:
   containers: 
   - name: hello-world
-    command: ["/bin/ash", "-c", "trap : TERM INT; sleep infinity & wait; ip link set data6 up; ip link set ctrl6 up"]
+    command: ["/bin/ash", "-c", "trap : TERM INT; sleep infinity & wait; ip link set data6 up; ip link set mgmt6 up"]
     image: alpine
     securityContext:
       capabilities:

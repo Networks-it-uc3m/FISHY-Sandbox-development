@@ -5,8 +5,8 @@ metadata:
   annotations:
     k8s.v1.cni.cncf.io/networks: > 
         vdatahost1@data1, vdatahost2@data2, vdatahost3@data3, vdatahost4@data4, vdatahost5@data5, vdatahost6@data6, vdatahost7@data7, vdatahost8@data8, vdatahost9@data9, vdatahost10@data10, 
-        vctrlhost1@ctrl1, vctrlhost2@ctrl2, vctrlhost3@ctrl3, vctrlhost4@ctrl4, vctrlhost5@ctrl5, vctrlhost6@ctrl6, vctrlhost7@ctrl7, vctrlhost8@ctrl8, vctrlhost9@ctrl9, vctrlhost10@ctrl10, 
-        vxlan1@vxlan-ctrl, vxlan2@vxlan-domain2
+        vmgmthost1@mgmt1, vmgmthost2@mgmt2, vmgmthost3@mgmt3, vmgmthost4@mgmt4, vmgmthost5@mgmt5, vmgmthost6@mgmt6, vmgmthost7@mgmt7, vmgmthost8@mgmt8, vmgmthost9@mgmt9, vmgmthost10@mgmt10, 
+        vxlan1@vxlan-mgmt, vxlan2@vxlan-domain2
 spec:
   containers: 
   - name: ned-domain-1
