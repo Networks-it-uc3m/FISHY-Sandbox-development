@@ -3,7 +3,7 @@ kind: Pod
 metadata:
   name: hello-world
   annotations:
-    k8s.v1.cni.cncf.io/networks: vdatapod1@data, vctrlpod1@ctrl
+    k8s.v1.cni.cncf.io/networks: vdatapod1@data, vmgmtpod1@mgmt
 spec:
   containers:
   - name: hello-world
