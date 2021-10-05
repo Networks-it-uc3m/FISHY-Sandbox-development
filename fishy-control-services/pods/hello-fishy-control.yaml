@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hello-mgmt
+  annotations:
+    k8s.v1.cni.cncf.io/networks: vmgmtpod1@mgmt
+spec:
+  containers: 
+  - name: hello-mgmt
+    command: ["/bin/ash", "-c", "ip link set mgmt up; trap : TERM INT; sleep infinity & wait"]
+    image: alpine
+    securityContext:
+      capabilities:
+        add: ["NET_ADMIN"]
