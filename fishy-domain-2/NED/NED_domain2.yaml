@@ -12,7 +12,23 @@ spec:
   - name: ned-domain-2
     image: lewisfelix24/ovs-pod-ml2s:amd64
     command: ["/bin/sh", "-c"]
-    args: ["ovsdb-server --remote=punix:/var/run/openvswitch/db.sock --remote=db:Open_vSwitch,Open_vSwitch,manager_options --pidfile=/var/run/openvswitch/ovsdb-server.pid --detach && ovs-vsctl --db=unix:/var/run/openvswitch/db.sock --no-wait init && ovs-vswitchd --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach && /bin/sleep 3650d"]
+    args: ["ovsdb-server --remote=punix:/var/run/openvswitch/db.sock --remote=db:Open_vSwitch,Open_vSwitch,manager_options --pidfile=/var/run/openvswitch/ovsdb-server.pid 
+         --detach && ovs-vsctl --db=unix:/var/run/openvswitch/db.sock --no-wait init && ovs-vswitchd --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach && 
+         ip link set mgmt1 up && ip link set mgmt2 up && ip link set mgmt3 up && ip link set mgmt4 up && ip link set mgmt5 up && ip link set mgmt6 up &&
+         ip link set mgmt7 up && ip link set mgmt8 up && ip link set mgmt9 up && ip link set mgmt10 up &&
+         ip link set data1 up && ip link set data2 up && ip link set data3 up && ip link set data4 up && ip link set data5 up && ip link set data6 up &&
+         ip link set data7 up && ip link set data8 up && ip link set data9 up && ip link set data10 up &&
+         ip link set vxlan-mgmt up && ip link set vxlan-domain1 up &&
+         ovs-vsctl add-br brtun && ip link set brtun up &&
+         ovs-vsctl add-port brtun mgmt1 tag=1 && ovs-vsctl add-port brtun mgmt2 tag=1 && ovs-vsctl add-port brtun mgmt3 tag=1 && ovs-vsctl add-port brtun mgmt4 tag=1 &&
+         ovs-vsctl add-port brtun mgmt5 tag=1 && ovs-vsctl add-port brtun mgmt6 tag=1 && ovs-vsctl add-port brtun mgmt7 tag=1 && ovs-vsctl add-port brtun mgmt8 tag=1 &&
+         ovs-vsctl add-port brtun mgmt9 tag=1 && ovs-vsctl add-port brtun mgmt10 tag=1 &&
+         ovs-vsctl add-port brtun data1 tag=2 && ovs-vsctl add-port brtun data2 tag=2 && ovs-vsctl add-port brtun data3 tag=2 && ovs-vsctl add-port brtun data4 tag=2 &&
+         ovs-vsctl add-port brtun data5 tag=2 && ovs-vsctl add-port brtun data6 tag=2 && ovs-vsctl add-port brtun data7 tag=2 && ovs-vsctl add-port brtun data8 tag=2 &&
+         ovs-vsctl add-port brtun data9 tag=2 && ovs-vsctl add-port brtun data10 tag=2 &&
+         ovs-vsctl add-port brtun vxlan-mgmt tag=1 && ovs-vsctl add-port brtun vxlan-domain1 tag=2 &&
+         /bin/sleep 3650d"]
+
     imagePullPolicy: IfNotPresent
     securityContext:
       capabilities:
