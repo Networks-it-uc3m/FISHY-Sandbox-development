@@ -35,4 +35,4 @@ In the first version of the sandbox (IT-1), the NED will offer a set of pre-crea
 
 IT-1 will provide a reference implementation of the sandbox using K8s: each domain will be provided as a k8s cluster that will support the deploynment of FISHY components and VNFs. And each k8s cluster will be packaged into a virtual machine (the sandox will be provided as a set of three interconnected virtual machines). Still, the sandbox design is flexible to accommodate different virtual infrastructure management solutions, e.g., OpenStack. A NED implementation will be also made available for OpenStack deployments.
 
-Click [here](https://github.com/Networks-it-uc3m/FISHY-Sandbox-development/tree/main/Guides)to access the installation guide!
+**Click [here](https://github.com/Networks-it-uc3m/FISHY-Sandbox-development/tree/main/Guides) to access the installation guide!
