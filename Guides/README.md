@@ -22,7 +22,10 @@ Use the [following link](https://vm-images.netcom.it.uc3m.es/FISHY/images/fishy-
 
 Component | Fishy-Control-Services | Domain-1 | Domain-2 | Comments
 :-------------: | :-------------: | :-------------: | :-------------: | :-------------:
-NED (v1)  | X | X | X | Automatically deployed once the sandbox VM has been installed
+K8s cluster | X | X | X | * Kubeadm: version 1.22
+* Kubectl: version 1.22.2
+* Docker: 20.10.3
+NED (v1)  | X | X | X | Automatically deployed once the sandbox VM has been installed. This versión supports two VLANs: one for management communication and a second one for inter-site data-plane communications.
 
 
 ## Installation process
