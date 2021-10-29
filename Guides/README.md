@@ -12,11 +12,13 @@ Use the [following link](https://vm-images.netcom.it.uc3m.es/FISHY/images/fishy-
 + All machines must be interconnected through a virtual network that provides Internet connectivity. Each VM must have one network interface connected to this virtual network
 + The deployment of each VM with a single network interface is recommended. If more interfaces are aggregated to the VM, the script will attach the NED to the interface used to reach the internet (i.e., the default route). Therefore, the VM must be able to reach the rest using this interface. 
 
+<!--
 ## Kubernetes Cluster components
 
 * Kubeadm: version 1.22
 * Kubectl: version 1.22.2
 * Docker: version 20.10.3
+-->
 
 ## Fishy Sandbox Components
 
