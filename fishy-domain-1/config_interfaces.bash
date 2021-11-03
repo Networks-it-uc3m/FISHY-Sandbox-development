@@ -27,6 +27,7 @@ ip link set mtu 1450 dev vdatapod3
 ip link set mtu 1450 dev vdatahost4
 ip link set mtu 1450 dev vdatapod4
 ip link set mtu 1450 dev vdatahost5
+ip link set mtu 1450 dev vdatapod5
 ip link set mtu 1450 dev vdatapod6
 ip link set mtu 1450 dev vdatahost6
 ip link set mtu 1450 dev vdatapod6
