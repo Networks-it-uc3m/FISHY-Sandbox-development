@@ -4,7 +4,7 @@ metadata:
   name: ned-fishy-control
   annotations:
     k8s.v1.cni.cncf.io/networks: >
-        vxlan1@vxlan-dom1, vxlan3@vxlan-dom2
+        vxlan1@vxlan-dom1, vxlan3@vxlan-dom2, 
         vmgmthost1@mgmt1, vmgmthost2@mgmt2, vmgmthost3@mgmt3, vmgmthost4@mgmt4, vmgmthost5@mgmt5, vmgmthost6@mgmt6, vmgmthost7@mgmt7, vmgmthost8@mgmt8, vmgmthost9@mgmt9, vmgmthost10@mgmt10
 spec:
   containers: 
