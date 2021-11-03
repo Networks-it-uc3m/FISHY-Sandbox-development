@@ -4,7 +4,7 @@ metadata:
   name: ned-fishy-control
   annotations:
     k8s.v1.cni.cncf.io/networks: >
-        vxlan1@vxlan-domain1, vxlan3@vxlan-domain2,
+        vxlan1@vxlan-cont, 
         vmgmthost1@mgmt1, vmgmthost2@mgmt2, vmgmthost3@mgmt3, vmgmthost4@mgmt4, vmgmthost5@mgmt5, vmgmthost6@mgmt6, vmgmthost7@mgmt7, vmgmthost8@mgmt8, vmgmthost9@mgmt9, vmgmthost10@mgmt10
 spec:
   containers: 
@@ -15,12 +15,12 @@ spec:
          --detach && ovs-vsctl --db=unix:/var/run/openvswitch/db.sock --no-wait init && ovs-vswitchd --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach && 
          ip link set mgmt1 up && ip link set mgmt2 up && ip link set mgmt3 up && ip link set mgmt4 up && ip link set mgmt5 up && ip link set mgmt6 up &&
          ip link set mgmt7 up && ip link set mgmt8 up && ip link set mgmt9 up && ip link set mgmt10 up && 
-         ip link set vxlan-domain1 up && ip link set vxlan-domain2 up && 
+         ip link set vxlan-cont up && 
          ovs-vsctl add-br brtun && ip link set brtun up && 
          ovs-vsctl add-port brtun mgmt1 tag=1 && ovs-vsctl add-port brtun mgmt2 tag=1 && ovs-vsctl add-port brtun mgmt3 tag=1 && ovs-vsctl add-port brtun mgmt4 tag=1 && 
          ovs-vsctl add-port brtun mgmt5 tag=1 && ovs-vsctl add-port brtun mgmt6 tag=1 && ovs-vsctl add-port brtun mgmt7 tag=1 && ovs-vsctl add-port brtun mgmt8 tag=1 && 
          ovs-vsctl add-port brtun mgmt9 tag=1 && ovs-vsctl add-port brtun mgmt10 tag=1 && 
-         ovs-vsctl add-port brtun vxlan-domain1 tag=1 && ovs-vsctl add-port brtun vxlan-domain2 tag=1 && 
+         ovs-vsctl add-port brtun vxlan-cont tag=1 && 
          /bin/sleep 3650d"]
     imagePullPolicy: IfNotPresent
     securityContext:
