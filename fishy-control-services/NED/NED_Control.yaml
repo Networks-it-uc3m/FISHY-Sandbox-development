@@ -15,7 +15,7 @@ spec:
          --detach && ovs-vsctl --db=unix:/var/run/openvswitch/db.sock --no-wait init && ovs-vswitchd --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach && 
          ip link set mgmt1 up && ip link set mgmt2 up && ip link set mgmt3 up && ip link set mgmt4 up && ip link set mgmt5 up && ip link set mgmt6 up &&
          ip link set mgmt7 up && ip link set mgmt8 up && ip link set mgmt9 up && ip link set mgmt10 up && 
-         ip link set vxlan-dom1 up && ip link set vxlan-dom2 &&
+         ip link set vxlan-dom1 up && ip link set vxlan-dom2 up &&
          ovs-vsctl add-br brtun && ip link set brtun up && 
          ovs-vsctl add-port brtun mgmt1 tag=1 && ovs-vsctl add-port brtun mgmt2 tag=1 && ovs-vsctl add-port brtun mgmt3 tag=1 && ovs-vsctl add-port brtun mgmt4 tag=1 && 
          ovs-vsctl add-port brtun mgmt5 tag=1 && ovs-vsctl add-port brtun mgmt6 tag=1 && ovs-vsctl add-port brtun mgmt7 tag=1 && ovs-vsctl add-port brtun mgmt8 tag=1 && 
