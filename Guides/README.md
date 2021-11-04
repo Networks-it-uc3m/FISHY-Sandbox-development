@@ -4,7 +4,7 @@ Welcome to the installation guide for the FISHY-Sandbox. In this section of the 
 
 ## Download Fishy VM
 
-Use the [following link](https://vm-images.netcom.it.uc3m.es/FISHY/images/fishy-VM-baseline-image-disk1-v2.qcow) to download the latest version of the Sandbox VM.
+Use the [following link](https://vm-images.netcom.it.uc3m.es/FISHY/images/fishy-VM-baseline-v1_2.qcow) to download the latest version of the Sandbox VM.
 
 ## Fishy-Sandbox Prerequisites
 
