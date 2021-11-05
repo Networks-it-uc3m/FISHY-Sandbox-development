@@ -92,7 +92,7 @@ In this case, the example will deploy the corresponding service in each domain, 
     
     **This name can be chosen at will.
     
-    Here is important to add a few lines on the containers specs that allows to run the networking functions. These are:
+    It is also important to add a few lines on the containers specs to provide the pods with the corresponding permissions to manage their network interfaces. These are:
     
     ![ann2](https://user-images.githubusercontent.com/36893060/140508549-d10333a9-9f38-419d-8b94-23e20a3a8002.jpg)
 
@@ -114,13 +114,13 @@ In this case, the example will deploy the corresponding service in each domain, 
     b.	(Domain 2) ```nano smart-car.yaml```.
 5.	Once in the file, edit the annotations and add the interfaces you want to use. In this case, the remaining domains support the use of management and data interfaces.  To edit the file to aggregate more interfaces, introduce the corresponding annotation separated by commas. The format is the same as before: _interface_name@name_inside_pod_.
 
-6. .
+6. Depending on the domain, execute the following commands:
 
     a.  (Domain 1) Execute ```kubectl create -f infotainment-server.yaml```.
     
     b.  (Domain 2) Execute ```kubectl create -f smart-car.yaml```.
 7.	Wait for a second and check that the _infotainment server/smart car_ pods are running in the corresponding domain by executing _kubectl get pods_.
-8. .
+8. Depending on the domain, execute the following commands:
 
     a.  (Domain 1) Go inside the module executing ```kubectl exec -it infotainment-server -- /bin/sh``` and check that the interfaces introduced in step 5 are UP (management & data) with the command ```ip a s```.
     
