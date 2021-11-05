@@ -66,3 +66,63 @@ cp: overwrite '/home/ubuntu/.kube/config'? y
 Node [fishy-control-services/domain-1/domain-2] ready!
 ```
 You can also check that it is properly installed by introducing the command _kubectl get pods_ and checking that the _“ned-[DOMAIN-NAME]”_ is up and in the “Running” status
+
+
+## Hello World
+Once the machines have been installed and configured using the sandbox-config.bash script, the Hello-world example allows the users to test how the services deployed in the sandbox can be interconnected between each other using through the NED deployed in the domains. 
+
+This example mimics the deployment of a simple use case in the fishy platform, where an infotainment server in Domain-1 will communicate with a smart car located in Domain-2. All components have a management interface that the fishy-control-services domain will use to communicate with them (for management purposes). 
+
+In this case, the example will deploy the corresponding service in each domain, explaining the steps required to deploy (and configure) them for establishing communication between them through the corresponding network interfaces. The steps to be performed in each domain are the following:
+
+### Fishy-control-module
+1.	Execute the command ```kubectl get pods``` and check that the NED is in the “Running” status.
+2.	Check the available interfaces to attach pods using the command ```ip a s```.
+3.	Go to the directory _hello-world/fishy-control-services/_ .
+4.	Open the file using ```nano fishy-module.yaml```.
+5.	Once in the file, edit the _annotations_ and add the interfaces you want to use. In the case of the Control Module, only the management ones (since no data plane interfaces will be available in this domain). The format is _interface_name*@name_inside_pod**_. Example:
+
+    ![ann1](https://user-images.githubusercontent.com/36893060/140507904-7bea4e3a-9a26-4815-8598-29e0254269f7.jpg)
+    
+    *This should be one of the interfaces names listed when executing the command ```ip a s``` (step 2).
+    
+    **This name can be chosen at will.
+    
+    Here is important to add a few lines on the containers specs that allows to run the networking functions. These are:
+    
+    ![ann2](https://user-images.githubusercontent.com/36893060/140508549-d10333a9-9f38-419d-8b94-23e20a3a8002.jpg)
+
+
+
+6.	Execute ```kubectl create -f fishy-module.yaml```.
+7.	Wait a couple of seconds and check that the _fishy-module_ is running by executing ```kubectl get pods```.
+8.	Go inside the module executing ```kubectl exec -it fishy-module -- /bin/sh``` and check that the interface introduced in step 5 is in the UP state (e.g., using the command ```ip a s```).
+9.	Add an IP address to this interface executing ```ip addr add [ip-address/mask] dev [interface-name]```.
+
+### Fishy-domain-1 & Fishy-domain-2
+1.	Execute the command ```kubectl get pods``` and check that the NED is in the “Running” status.
+2.	Check the interfaces available with ```ip a s```.
+3.	Go to the directory _hello-world/fishy-domain-1/_ for Fishy-domain-1 or _hello-world/fishy-domain-2/ for Fishy-domain-2_. 
+4.	Open the file using: 
+
+    a.	(Domain 1) ```nano infotainment-server.yaml```.
+
+    b.	(Domain 2) ```nano smart-car.yaml```.
+5.	Once in the file, edit the annotations and add the interfaces you want to use. In this case, the remaining domains support the use of management and data interfaces.  To edit the file to aggregate more interfaces, introduce the corresponding annotation separated by commas. The format is the same as before: _interface_name@name_inside_pod_.
+
+6. .
+
+    a.  (Domain 1) Execute ```kubectl create -f infotainment-server.yaml```.
+    
+    b.  (Domain 2) Execute ```kubectl create -f smart-car.yaml```.
+7.	Wait for a second and check that the _infotainment server/smart car_ pods are running in the corresponding domain by executing _kubectl get pods_.
+8. .
+
+    a.  (Domain 1) Go inside the module executing ```kubectl exec -it infotainment-server -- /bin/sh``` and check that the interfaces introduced in step 5 are UP (management & data) with the command ```ip a s```.
+    
+    b.  (Domain 2) Go inside the module executing ```kubectl exec -it smart-car -- /bin/sh``` and check that the interfaces introduced in step 5 are UP (management & data) with the command ```ip a s```.
+9.	Add an IP address to both interfaces executing ```ip addr add [ip-address/mask] dev [interface-name]```. Check executing ```ip a s```.
+
+To check connectivity between the different domains and the control service, do a ping to the corresponding IPs added to the modules (i.e., execute the command ```ping [IP-to-test]``` in the pods).
+
+Take into account that the interfaces can only communicate with their own peers. In other words, management interfaces can only communicate with management interfaces, and data interfaces can only communicate with data interfaces.
