@@ -33,12 +33,16 @@ NED (v1)  | X | X | X | Automatically deployed on each domain once the sandbox h
 1. Login into the machine, using the following credentials:
   * _User:_ admin-fishy 
   * _Password:_ admin-fishy
-  
-2. Start the installation process using the following command. If prompted, introduce the password of the VM:
+
+2. If not present in the VM, download the configuration file:
+```bash
+wget https://github.com/Networks-it-uc3m/FISHY-Sandbox-development/blob/main/sandbox-config/sandbox-config.bash && chmod +x sandbox-config.bash
+```
+3. Start the installation process using the following commands. If prompted, introduce the password of the VM:
 ```bash
 ./sandbox-config.bash
 ```
-3. If the VM to be configured is the host of the fishy control services, introduce in the command line the “y” character:
+4. If the VM to be configured is the host of the fishy control services, introduce in the command line the “y” character:
 ```bash
 Is this machine fishy-control-services?[y/n]
 y
@@ -50,18 +54,18 @@ n
 Is this domain-1 or domain-2?[domain-1/domain-2]
 domain-1
 ```
-4. Introduce the respective IP addresses of the other VMs when prompted by the console:
+5. Introduce the respective IP addresses of the other VMs when prompted by the console:
 ```bash
 Please, enter Domain 1 IP:
 10.0.0.1
 Please, enter Domain 2 IP:
 10.0.0.2
 ```
-5. Wait for the process to be completed. If asked by the command line through the following message, write the “y” character and press Enter:
+6. Wait for the process to be completed. If asked by the command line through the following message, write the “y” character and press Enter:
 ```bash
 cp: overwrite '/home/ubuntu/.kube/config'? y
 ```
-6. Once the following message, the VM is ready to be used.
+7. Once the following message, the VM is ready to be used.
 ```bash
 Node [fishy-control-services/domain-1/domain-2] ready!
 ```
