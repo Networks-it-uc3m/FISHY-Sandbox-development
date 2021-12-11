@@ -6,6 +6,10 @@ Welcome to the installation guide for the FISHY-Sandbox. In this section of the 
 
 Use the [following link](https://vm-images.netcom.it.uc3m.es/FISHY/images/fishy-VM-baseline-v1_2.qcow) to download the latest version of the Sandbox VM.
 
+## FISHY-Sandbox Demo video
+
+To see a full demo detailing what is the FISHY-Sandbox, its main components and how to use it, check the [following link](https://vm-images.netcom.it.uc3m.es/FISHY/videos/FISHY-Sandbox-installation.mp4).
+
 ## Fishy-Sandbox Prerequisites
 
 + Three Virtual Machines (VM) using the “fishy-sandbox-baseline.qcow” image. Each VM must have at least 2CPUs and 2GBs of RAM for its execution.
