@@ -44,6 +44,7 @@ read control_bool
 		sudo bridge fdb append to 00:00:00:00:00:00 dst $domain2 dev vxlan3
 		git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
 		sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
+		echo -e "\nvm.max_map_count=524288\n" | sudo tee -a /etc/sysctl.conf && sudo sysctl -w vm.max_map_count=524288
 
 	elif [[ "$control_bool" == "n" ]]; then
 		echo "Is this domain-1 or domain-2?[domain-1/domain-2]"
@@ -117,5 +118,13 @@ sleep 5
 kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/NED/
 
 sudo rm -r $HOME/FISHY-Sandbox-development
+
+sleep 60
+
+if [[ "$control_bool" == "y" ]]; then
+	git clone https://github.com/H2020-FISHY/IRO.git &> /dev/null
+	kubectl apply -f $HOME/IRO/deployment/iro_kubernetes.yml
+	sudo rm -r $HOME/IRO
+fi
 
 echo "Node $domain_config ready!"
