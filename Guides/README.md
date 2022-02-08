@@ -29,7 +29,8 @@ To see a full demo detailing what is the FISHY-Sandbox, its main components and 
 Component | Fishy-Control-Services | Domain-1 | Domain-2 | Comments 
 :-------------: | :-------------: | :-------------: | :-------------: | :-------------
 K8s cluster | X | X | X | Kubeadm: version 1.22; Kubectl: version 1.22.2; Docker: version 20.10.3 
-NED (v1)  | X | X | X | Automatically deployed on each domain once the sandbox has been installed (see *installation process* below). This versión supports two VLANs: one for management communication and a second one for inter-domain data-plane communications. 
+NED (v1)  | X | X | X | Automatically deployed on each domain once the sandbox has been installed (see *installation process* below). This version supports two VLANs: one for management communication and a second one for inter-domain data-plane communications. 
+IRO (v1)  | X |  |  | Automatically deployed on the Fishy-Control-Services domain once the sandbox has been installed. The current version supports one VLAN for management communication. Additional interfaces (e.g data) might follow in the future if needed.
 
 
 ## Installation process
@@ -38,13 +39,13 @@ NED (v1)  | X | X | X | Automatically deployed on each domain once the sandbox h
   * _User:_ admin-fishy 
   * _Password:_ admin-fishy
 
-2. If not present in the VM, download the configuration file:
+2. Download the most recent configuration file using the following command:
 ```bash
-wget https://github.com/Networks-it-uc3m/FISHY-Sandbox-development/blob/main/sandbox-config/sandbox-config.bash && chmod +x sandbox-config.bash
+https://raw.githubusercontent.com/H2020-FISHY/FISHY-Sandbox-development/main/sandbox-config/sandbox-config.bash && chmod +x sandbox-config.bash
 ```
 3. Start the installation process using the following commands. If prompted, introduce the password of the VM:
 ```bash
-./sandbox-config.bash
+./sandbox-config.bash install
 ```
 4. If the VM to be configured is the host of the fishy control services, introduce in the command line the “y” character:
 ```bash
