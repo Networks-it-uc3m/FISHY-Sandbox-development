@@ -145,7 +145,7 @@ kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/NED/
 
 sudo rm -r $HOME/FISHY-Sandbox-development
 
-sleep 60
+sleep 20
 
 if [[ "$domain_config" == "fishy-control-services" ]]; then
 	git clone https://github.com/H2020-FISHY/IRO.git &> /dev/null
