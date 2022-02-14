@@ -26,11 +26,11 @@ To see a full demo detailing what is the FISHY-Sandbox, its main components and 
 
 ## Fishy Sandbox Components
 
-Component | Fishy-Control-Services | Domain-1 | Domain-2 | Comments 
-:-------------: | :-------------: | :-------------: | :-------------: | :-------------
-K8s cluster | X | X | X | Kubeadm: version 1.22; Kubectl: version 1.22.2; Docker: version 20.10.3 
-NED (v1)  | X | X | X | Automatically deployed on each domain once the sandbox has been installed (see *installation process* below). This version supports two VLANs: one for management communication and a second one for inter-domain data-plane communications. 
-IRO (v1)  | X |  |  | Automatically deployed on the Fishy-Control-Services domain once the sandbox has been installed. The current version supports one VLAN for management communication. Additional interfaces (e.g data) might follow in the future if needed.
+Component | Fishy-Control-Services | Domain-1 | Domain-2 | IP Address(es) | Comments 
+:-------------: | :-------------: | :-------------: | :-------------: | :-------------: |:-------------
+K8s cluster | X | X | X |  | Kubeadm: version 1.22; Kubectl: version 1.22.2; Docker: version 20.10.3 
+NED (v1)  | X | X | X | 192.168.5.251 (NED FCS); 192.168.5.252 (NED Domain 1); 192.168.5.253 (NED Domain 3) | Automatically deployed on each domain once the sandbox has been installed (see *installation process* below). This version supports two VLANs: one for management communication and a second one for inter-domain data-plane communications. 
+IRO (v1)  | X |  |  | 192.168.5.1 | Automatically deployed on the Fishy-Control-Services domain once the sandbox has been installed. The current version supports one VLAN for management communication. Additional interfaces (e.g data) might follow in the future if needed.
 
 
 ## Installation process
@@ -76,6 +76,23 @@ Node [fishy-control-services/domain-1/domain-2] ready!
 ```
 You can also check that it is properly installed by introducing the command _kubectl get pods_ and checking that the _“ned-[DOMAIN-NAME]”_ is up and in the “Running” status
 
+## Upgrade a FISHY Sandbox Domain
+In order to upgrade your domain to its latest version (i.e., the latest version of each component in each FISHY domain), use the following command inside your domain and follow the proccess:
+
+```bash
+./sandbox-config.bash update
+y
+```
+#### IMPORTANT: ALL YOUR CHANGES IN THE DOMAIN (K8S CLUSTER) WILL BE LOST AFTER THE UPDATE. MAKE SURE TO SAVE A COPY OF YOUR DEPLOYMENTS BEFORE THE UPDATE PROCCESS IF YOU WANT TO KEEP YOUR MODIFICATIONS.
+
+## Reboot a FISHY Sandbox Domain
+After rebooting a FISHY Sandbox Domain, it is neccessary to perform an update proccess to bring the Sandbox node up (with the updated elements). Therefore, use the following command and follow the proccess:
+
+```bash
+./sandbox-config.bash update
+y
+```
+#### IMPORTANT: ALL YOUR CHANGES IN THE DOMAIN (K8S CLUSTER) WILL BE LOST AFTER THE UPDATE. MAKE SURE TO SAVE A COPY OF YOUR DEPLOYMENTS BEFORE THE UPDATE PROCCESS IF YOU WANT TO KEEP YOUR MODIFICATIONS.
 
 ## Hello World
 Once the machines have been installed and configured using the sandbox-config.bash script, the Hello-world example allows the users to test how the services deployed in the sandbox can be interconnected between each other using through the NED deployed in the domains. 
