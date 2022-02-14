@@ -29,7 +29,7 @@ To see a full demo detailing what is the FISHY-Sandbox, its main components and 
 Component | Fishy-Control-Services | Domain-1 | Domain-2 | IP Address(es) | Comments 
 :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |:-------------
 K8s cluster | X | X | X |  | Kubeadm: version 1.22; Kubectl: version 1.22.2; Docker: version 20.10.3 
-NED (v1)  | X | X | X | 192.168.5.251 (NED FCS); 192.168.5.252 (NED Domain 1); 192.168.5.253 (NED Domain 3) | Automatically deployed on each domain once the sandbox has been installed (see *installation process* below). This version supports two VLANs: one for management communication and a second one for inter-domain data-plane communications. 
+NED (v1)  | X | X | X | 192.168.5.251 (NED FCS Domain); 192.168.5.252 (NED Domain 1); 192.168.5.253 (NED Domain 2) | Automatically deployed on each domain once the sandbox has been installed (see *installation process* below). This version supports two VLANs: one for management communication and a second one for inter-domain data-plane communications. 
 IRO (v1)  | X |  |  | 192.168.5.1 | Automatically deployed on the Fishy-Control-Services domain once the sandbox has been installed. The current version supports one VLAN for management communication. Additional interfaces (e.g data) might follow in the future if needed.
 
 
