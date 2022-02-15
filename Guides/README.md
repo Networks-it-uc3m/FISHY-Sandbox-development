@@ -1,6 +1,6 @@
 # FISHY-Sandbox Wiki
 
-Welcome to the Wiki for the FISHY-Sandbox. In this section of the repository, you will find the main guides for the download, installation, operation and troubleshooting of the FISHY-Sandbox used in the H2020 FISHY project. This Section of the Wiki includes the description of the Sandbox, its main components and the respective download links for their components. 
+Welcome to the Wiki for the FISHY-Sandbox. In this section of the repository, you will find the main guides for the download, installation, operation and troubleshooting of the FISHY-Sandbox used in the H2020 FISHY project. This section of the Wiki includes the description of Sandbox prerequisites, its main components and the respective download links for their components. 
 
 ## Table of Contents
 [Download FISHY-Sandbox VM](#down)
