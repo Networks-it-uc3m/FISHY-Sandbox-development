@@ -6,7 +6,7 @@ Welcome to the FAQ section of the FISHY-Sandbox. In this section of the reposito
 
 __Q: My VM has been shutdown, or I had to reboot my VM where I was running a Domain. What steps should I perform to re-create the Domain in my Sandbox?__ 
 
-A: After performing a reboot in the VM where the Domain has been installed, it is neccessary to run the update script in order to re-create the Kubernetes cluster  and build the neccessary network interfaces. Otherwise, the Domain will not work properly. Run the following commands after you have rebooted your VM and introduce the information asked by the command prompt. See the FISHY-Sandbox Installation section in the [FISHY-Sandbox Installation Guide](https://github.com/Networks-it-uc3m/FISHY-Sandbox-development/blob/main/Guides/README.md) for further information. 
+A: After performing a reboot in the VM where the Domain has been installed, it is neccessary to run the update script in order to re-create the Kubernetes cluster  and build the neccessary network interfaces. Otherwise, the Domain will not work properly. Run the following commands after you have rebooted your VM and introduce the information asked by the command prompt. See the FISHY-Sandbox Installation section in the [FISHY-Sandbox Installation Guide](https://github.com/Networks-it-uc3m/FISHY-Sandbox-development/tree/main/Guides/installation) for further information. 
 
 ```bash
 ./sandbox-config.bash update
