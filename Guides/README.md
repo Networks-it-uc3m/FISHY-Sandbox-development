@@ -2,15 +2,38 @@
 
 Welcome to the installation guide for the FISHY-Sandbox. In this section of the repository, you will find the guide for the installation of the latest version of the Sandbox used in the H2020 FISHY project, as well as the respective download links.
 
-## Download Fishy VM
+## Table of Contents
+[Download FISHY-Sandbox VM](#down)
+
+[FISHY-Sandbox Demo Video](#video)
+
+[FISHY-Sandbox Prerequisites](#prereq)
+
+[FISHY-Sandbox Components](#components)
+
+[FISHY-Sandbox Installation process](#install)
+
+[Update a FISHY-Sandbox Domain](#update)
+
+[Hello World](#hello)
+
+[FAQ](#faq)
+
+<a name ="down"/>
+
+## Download FISHY-Sandbox VM
 
 Use the [following link](https://vm-images.netcom.it.uc3m.es/FISHY/images/fishy-VM-baseline-v1_2.qcow) to download the latest version of the Sandbox VM.
+
+<a name ="video"/>
 
 ## FISHY-Sandbox Demo video
 
 To see a full demo detailing what is the FISHY-Sandbox, its main components and how to use it, check the [following link](https://vm-images.netcom.it.uc3m.es/FISHY/videos/FISHY-Sandbox-installation.mp4).
 
-## Fishy-Sandbox Prerequisites
+<a name ="prereq"/>
+
+## FISHY-Sandbox Prerequisites
 
 + Three Virtual Machines (VM) using the “fishy-sandbox-baseline.qcow” image. Each VM must have at least 2CPUs and 2GBs of RAM for its execution.
 + All machines must be interconnected through a virtual network that provides Internet connectivity. Each VM must have one network interface connected to this virtual network
@@ -24,7 +47,9 @@ To see a full demo detailing what is the FISHY-Sandbox, its main components and 
 * Docker: version 20.10.3
 -->
 
-## Fishy Sandbox Components
+<a name ="components"/>
+
+## FISHY-Sandbox Components
 
 Component | Fishy-Control-Services | Domain-1 | Domain-2 | IP Address(es) | Comments 
 :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |:-------------
@@ -33,7 +58,9 @@ NED (v1)  | X | X | X | 192.168.5.251 (NED FCS Domain); 192.168.5.252 (NED Domai
 IRO (v1)  | X |  |  | 192.168.5.1 | Automatically deployed on the Fishy-Control-Services domain once the sandbox has been installed. The current version supports one VLAN for management communication. Additional interfaces (e.g data) might follow in the future if needed.
 
 
-## Installation process
+<a name ="install"/>
+
+## FISHY-Sandbox Installation process
 
 1. Login into the machine, using the following credentials:
   * _User:_ admin-fishy 
@@ -76,8 +103,10 @@ Node [fishy-control-services/domain-1/domain-2] ready!
 ```
 You can also check that it is properly installed by introducing the command _kubectl get pods_ and checking that the _“ned-[DOMAIN-NAME]”_ is up and in the “Running” status
 
-## Upgrade a FISHY Sandbox Domain
-In order to upgrade your domain to its latest version (i.e., the latest version of each component in each FISHY domain), use the following command inside your domain and follow the proccess:
+<a name ="update"/>
+
+## Update a FISHY-Sandbox Domain
+In order to update your domain to its latest version (i.e., the latest version of each component in each FISHY domain), use the following command inside your domain and follow the proccess:
 
 ```bash
 ./sandbox-config.bash update
@@ -85,6 +114,7 @@ y
 ```
 #### IMPORTANT: ALL YOUR CHANGES IN THE DOMAIN (K8S CLUSTER) WILL BE LOST AFTER THE UPDATE. MAKE SURE TO SAVE A COPY OF YOUR DEPLOYMENTS BEFORE THE UPDATE PROCCESS IF YOU WANT TO KEEP YOUR MODIFICATIONS.
 
+<!--
 ## Reboot a FISHY Sandbox Domain
 After rebooting a FISHY Sandbox Domain, it is neccessary to perform an update proccess to bring the Sandbox node up (with the updated elements). Therefore, use the following command and follow the proccess:
 
@@ -93,6 +123,10 @@ After rebooting a FISHY Sandbox Domain, it is neccessary to perform an update pr
 y
 ```
 #### IMPORTANT: ALL YOUR CHANGES IN THE DOMAIN (K8S CLUSTER) WILL BE LOST AFTER THE UPDATE. MAKE SURE TO SAVE A COPY OF YOUR DEPLOYMENTS BEFORE THE UPDATE PROCCESS IF YOU WANT TO KEEP YOUR MODIFICATIONS.
+
+-->
+
+<a name ="hello"/>
 
 ## Hello World
 Once the machines have been installed and configured using the sandbox-config.bash script, the Hello-world example allows the users to test how the services deployed in the sandbox can be interconnected between each other using through the NED deployed in the domains. 
@@ -173,3 +207,16 @@ In this case, the example will deploy the corresponding service in each domain, 
 To check connectivity between the different domains and the control service, do a ping to the corresponding IPs added to the modules (i.e., execute the command ```ping [IP-to-test]``` in the pods).
 
 Take into account that the interfaces can only communicate with their own peers. In other words, management interfaces can only communicate with management interfaces, and data interfaces can only communicate with data interfaces.
+
+<a name ="FAQ"/>
+
+## FAQ
+
+__Q: My VM has been shutdown, or I had to reboot my VM where I was running a Domain. What steps should I perform to re-create the Domain in my Sandbox?__ 
+
+A: After performing a reboot in the VM where the Domain has been installed, it is neccessary to run the update script in order to re-create the Kubernetes cluster  and build the neccessary network interfaces. Otherwise, the Domain will not work properly. Run the following commands after you have rebooted your VM and introduce the information asked by the command prompt. See the FISHY-Sandbox Installation section for further information. 
+
+```bash
+./sandbox-config.bash update
+y
+```
