@@ -15,12 +15,12 @@ fi
 if [[ "$mode" == "update" ]]; then
         kubectl delete daemonsets --all
 	kubectl delete deployments --all
-	sleep 40
+	sleep 30
 	#kubectl delete pods --all
         #sleep 15
 	sudo kubeadm reset
 	sudo rm -rf /etc/cni /etc/kubernetes /var/lib/dockershim /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/*
-        #sudo rm -r /mnt/data
+        sudo rm -r /mnt/data
 	sudo iptables -F && sudo iptables -X
 	sudo iptables -t nat -F && sudo iptables -t nat -X
 	sudo iptables -t raw -F && sudo iptables -t raw -X
@@ -31,7 +31,11 @@ fi
 if [[ $(ip link show | grep -E vxlan) ]]; then
 	echo "Network interfaces are already configured: proceeding to install the Kubernetes Cluster:"
 	domain_config=$(hostname -s)
-	git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
+        if [[ "$domain_config" != "fishy-control-services" ]]; then
+                echo "Please introduce fishy-control-services IP address:"
+                read cont
+        fi
+	#git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
 else
 	for (( c=0; c<${#ifaces[@]}; c++ ));
 	do
@@ -160,11 +164,29 @@ kubectl create -f $HOME/L2S-M/operator/daemonset/l2-ps-amd64.yaml
 sleep 30
 
 if [[ "$domain_config" == "fishy-control-services" ]]; then
-       kubectl create -f $HOME/FISHY-Sandbox-development/fishy-control-services/sdn-cont/
+        kubectl create -f $HOME/FISHY-Sandbox-development/fishy-control-services/sdn-cont/
+        sleep 15
+        for (( c=0; c<${#ifaces[@]}; c++ ));
+	do
+		if [[ $(/sbin/ip route | awk '/default/ { print $5 }') == ${ifaces[c]} ]]; then
+			mainInterface=${ifaces[c]}
+			break
+		fi
+		if [ $c -eq $((${#ifaces[@]} - 1)) ]; then
+			mainInterface=${ifaces[0]}
+		fi
+	done
+        IP=$(ip -f inet addr show $mainInterface | sed -En -e 's/.*inet ([0-9.]+).*/\1/p')
+        POD=$(kubectl get pod -l l2sm-component=l2-ps -o jsonpath="{.items[0].metadata.name}")
+        kubectl exec $POD -- ovs-vsctl set-fail-mode brtun secure
+        kubectl exec $POD -- ovs-vsctl set-controller brtun tcp:$IP:30036
 #	git clone https://github.com/H2020-FISHY/IRO.git &> /dev/null
 #	kubectl apply -f $HOME/IRO/deployment/iro_kubernetes.yml
 #	sudo rm -r $HOME/IRO
+else
+        POD=$(kubectl get pod -l l2sm-component=l2-ps -o jsonpath="{.items[0].metadata.name}")
+        kubectl exec $POD -- ovs-vsctl set-fail-mode brtun secure
+        kubectl exec $POD -- ovs-vsctl set-controller brtun tcp:$cont:30036
 fi
-
 
 echo "Node $domain_config ready!"
