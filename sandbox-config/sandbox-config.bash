@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 while_var=0
@@ -14,11 +13,14 @@ if [ "$mode" != "install" ] && [ "$mode" != "update" ]; then
 fi
 
 if [[ "$mode" == "update" ]]; then
+        kubectl delete daemonsets --all
 	kubectl delete deployments --all
-	sleep 10
-	kubectl delete pods --all
+	sleep 40
+	#kubectl delete pods --all
+        #sleep 15
 	sudo kubeadm reset
 	sudo rm -rf /etc/cni /etc/kubernetes /var/lib/dockershim /var/lib/etcd /var/lib/kubelet /var/run/kubernetes ~/.kube/*
+        #sudo rm -r /mnt/data
 	sudo iptables -F && sudo iptables -X
 	sudo iptables -t nat -F && sudo iptables -t nat -X
 	sudo iptables -t raw -F && sudo iptables -t raw -X
@@ -65,11 +67,11 @@ else
 			sudo ip link add vxlan1 type vxlan id 1969 dev $mainInterface dstport 4789
 			sudo ip link set vxlan1 up
 			sudo bridge fdb append to 00:00:00:00:00:00 dst $domain1 dev vxlan1
-			sudo ip link add vxlan3 type vxlan id 1971 dev $mainInterface dstport 4789
-			sudo ip link set vxlan3 up
-			sudo bridge fdb append to 00:00:00:00:00:00 dst $domain2 dev vxlan3
-			git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
-			sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
+			sudo ip link add vxlan2 type vxlan id 1971 dev $mainInterface dstport 4789
+			sudo ip link set vxlan2 up
+			sudo bridge fdb append to 00:00:00:00:00:00 dst $domain2 dev vxlan2
+			#git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
+			#sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
 			echo -e "\nvm.max_map_count=524288\n" | sudo tee -a /etc/sysctl.conf && sudo sysctl -w vm.max_map_count=524288
 
 		elif [[ "$control_bool" == "n" ]]; then
@@ -88,8 +90,8 @@ else
 				sudo ip link add vxlan2 type vxlan id 1970 dev $mainInterface dstport 4789
 				sudo ip link set vxlan2 up
 				sudo bridge fdb append to 00:00:00:00:00:00 dst $domain2 dev vxlan2
-				git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
-				sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
+				#git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
+				#sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
 
 	        	elif [[ "$domain_selector" == "domain-2" ]]; then
 					echo Please, enter Control-services IP:
@@ -98,21 +100,30 @@ else
 					read domain1
 					domain_config="fishy-domain-2"
 					while_var=1
-					sudo ip link add vxlan2 type vxlan id 1970 dev $mainInterface dstport 4789
+					sudo ip link add vxlan1 type vxlan id 1970 dev $mainInterface dstport 4789
+					sudo ip link set vxlan1 up
+					sudo bridge fdb append to 00:00:00:00:00:00 dst $domain1 dev vxlan1
+					sudo ip link add vxlan2 type vxlan id 1971 dev $mainInterface dstport 4789
 					sudo ip link set vxlan2 up
-					sudo bridge fdb append to 00:00:00:00:00:00 dst $domain1 dev vxlan2
-					sudo ip link add vxlan3 type vxlan id 1971 dev $mainInterface dstport 4789
-					sudo ip link set vxlan3 up
-					sudo bridge fdb append to 00:00:00:00:00:00 dst $cont dev vxlan3
-					git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
-					sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
+					sudo bridge fdb append to 00:00:00:00:00:00 dst $cont dev vxlan2
+					#git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
+					#sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
 
 			else
 				echo "Invalid Domain: please select an appropiate domain name"
 			fi
 		fi
 	done
-	sudo hostnamectl set-hostname $domain_config
+	sudo hostnamectl set-hostname $domain_config &> /dev/null
+        sudo $HOME/L2S-M/K8s/provision/veth.bash
+        sudo ip link add vxlan3 type vxlan id 1973 dev $mainInterface dstport 4789
+        sudo ip link add vxlan4 type vxlan id 1974 dev $mainInterface dstport 4789
+        sudo ip link add vxlan5 type vxlan id 1975 dev $mainInterface dstport 4789
+        sudo ip link add vxlan6 type vxlan id 1976 dev $mainInterface dstport 4789
+        sudo ip link add vxlan7 type vxlan id 1977 dev $mainInterface dstport 4789
+        sudo ip link add vxlan8 type vxlan id 1978 dev $mainInterface dstport 4789
+        sudo ip link add vxlan9 type vxlan id 1979 dev $mainInterface dstport 4789
+        sudo ip link add vxlan10 type vxlan id 1980 dev $mainInterface dstport 4789
 fi
 
 sudo kubeadm init --config $HOME/FISHY-Sandbox-development/clusterConfig.yaml
@@ -133,24 +144,26 @@ sudo rm -r multus-cni
 
 sleep 20
 
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/hosts/mgmt_interfaces &> /dev/null
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/pods/mgmt_interfaces &> /dev/null
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/hosts/data_interfaces &> /dev/null
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/pods/data_interfaces &> /dev/null
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/network_definitions/vxlans &> /dev/null
+#git clone L2S-M goes here
+kubectl create -f $HOME/L2S-M/K8s/interfaces_definitions/ &> /dev/null
+kubectl create -f $HOME/L2S-M/operator/deploy/mysql/ &> /dev/null
+kubectl create -f $HOME/L2S-M/operator/deploy/config/ &> /dev/null
+kubectl create -f $HOME/L2S-M/operator/deploy/deployOperator.yaml &> /dev/null
 
-sleep 5
+sleep 120
 
-kubectl create -f $HOME/FISHY-Sandbox-development/$domain_config/NED/
+kubectl create -f $HOME/L2S-M/operator/daemonset/l2-ps-amd64.yaml
 
-sudo rm -r $HOME/FISHY-Sandbox-development
+#sudo rm -r $HOME/FISHY-Sandbox-development
+#sudo rm -r $HOME/L2S-M-main
 
-sleep 20
+sleep 30
 
 if [[ "$domain_config" == "fishy-control-services" ]]; then
-	git clone https://github.com/H2020-FISHY/IRO.git &> /dev/null
-	kubectl apply -f $HOME/IRO/deployment/iro_kubernetes.yml
-	sudo rm -r $HOME/IRO
+       kubectl create -f $HOME/FISHY-Sandbox-development/fishy-control-services/sdn-cont/
+#	git clone https://github.com/H2020-FISHY/IRO.git &> /dev/null
+#	kubectl apply -f $HOME/IRO/deployment/iro_kubernetes.yml
+#	sudo rm -r $HOME/IRO
 fi
 
 

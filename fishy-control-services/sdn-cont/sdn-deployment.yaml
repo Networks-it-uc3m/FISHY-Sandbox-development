@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ryu-controller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      l2sm-component: sdn
+  template:
+    metadata:
+      labels:
+        l2sm-component: sdn
+    spec:
+      containers: 
+      - name: ryu-controller
+        # command: ["/bin/ash", "-c", "trap : TERM INT; sleep infinity & wait"]
+        image: lewisfelix24/l2sm-sdn-controller:stp-switch
+        ports:
+        - containerPort: 6633
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
