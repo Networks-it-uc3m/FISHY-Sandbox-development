@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ned
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      sia: ned
+  template:
+    metadata:
+      labels:
+        sia: ned
+      annotations:
+        k8s.v1.cni.cncf.io/networks: net1, net2, net3, net4, net5, vxlan-inf-1@vxlan-inf-1, vxlan-inf-2@vxlan-inf-2
+    spec:
+      containers:
+      - name: l2-ps
+        image: lewisfelix24/l2sm-ovs:latest
+        command: ["/bin/sh", "-c"]
+        args: ["ovsdb-server --remote=punix:/var/run/openvswitch/db.sock --remote=db:Open_vSwitch,Open_vSwitch,manager_options --pidfile=/var/run/openvswitch/ovsdb-server.pid 
+         --detach && ovs-vsctl --db=unix:/var/run/openvswitch/db.sock --no-wait init && ovs-vswitchd --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach && 
+         ip link set net1 up && ip link set net2 up && ip link set net3 up && ip link set net4 up && ip link set net5 up && 
+         ip link set vxlan-inf-1 up && ip link set vxlan-inf-2 up &&
+         ovs-vsctl add-br brtun && ip link set brtun up &&
+         ovs-vsctl add-port brtun net1 && ovs-vsctl add-port brtun net2 && ovs-vsctl add-port brtun net3 && ovs-vsctl add-port brtun net4 && ovs-vsctl add-port brtun net5 &&
+         ovs-vsctl add-port brtun vxlan-inf-1 && ovs-vsctl add-port brtun vxlan-inf-2 &&
+         /bin/sleep 3650d"]
+        imagePullPolicy: IfNotPresent
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ryu-ned
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      sia: sdn
+  template:
+    metadata:
+      labels:
+        sia: sdn
+    spec:
+      containers: 
+      - name: ryu-ned
+        # command: ["/bin/ash", "-c", "trap : TERM INT; sleep infinity & wait"]
+        image: lewisfelix24/ned-sdn:latest
+        ports:
+        - containerPort: 5000
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN"]
