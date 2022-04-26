@@ -5,8 +5,7 @@ metadata:
 spec:
   selector:    
     l2sm-component: sdn
-  type: NodePort
+  type: ClusterIP
   ports:  
   - port: 6633
     targetPort: 6633
-    nodePort: 30036

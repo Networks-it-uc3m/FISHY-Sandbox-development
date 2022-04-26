@@ -68,12 +68,12 @@ else
 			read domain2
 			domain_config="fishy-control-services"
 			while_var=1
-			sudo ip link add vxlan1 type vxlan id 1969 dev $mainInterface dstport 4789
-			sudo ip link set vxlan1 up
-			sudo bridge fdb append to 00:00:00:00:00:00 dst $domain1 dev vxlan1
-			sudo ip link add vxlan2 type vxlan id 1971 dev $mainInterface dstport 4789
-			sudo ip link set vxlan2 up
-			sudo bridge fdb append to 00:00:00:00:00:00 dst $domain2 dev vxlan2
+			sudo ip link add vxlan-inf-1 type vxlan id 1969 dev $mainInterface dstport 4789
+			sudo ip link set vxlan-inf-1 up
+			sudo bridge fdb append to 00:00:00:00:00:00 dst $domain1 dev vxlan-inf-1
+			sudo ip link add vxlan-inf-2 type vxlan id 1971 dev $mainInterface dstport 4789
+			sudo ip link set vxlan-inf-2 up
+			sudo bridge fdb append to 00:00:00:00:00:00 dst $domain2 dev vxlan-inf-2
 			#git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
 			#sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
 			echo -e "\nvm.max_map_count=524288\n" | sudo tee -a /etc/sysctl.conf && sudo sysctl -w vm.max_map_count=524288
@@ -88,12 +88,12 @@ else
 				read domain2
 				domain_config="fishy-domain-1"
 				while_var=1
-				sudo ip link add vxlan1 type vxlan id 1969 dev $mainInterface dstport 4789
-				sudo ip link set vxlan1 up
-				sudo bridge fdb append to 00:00:00:00:00:00 dst $cont dev vxlan1
-				sudo ip link add vxlan2 type vxlan id 1970 dev $mainInterface dstport 4789
-				sudo ip link set vxlan2 up
-				sudo bridge fdb append to 00:00:00:00:00:00 dst $domain2 dev vxlan2
+				sudo ip link add vxlan-inf-1 type vxlan id 1969 dev $mainInterface dstport 4789
+				sudo ip link set vxlan-inf-1 up
+				sudo bridge fdb append to 00:00:00:00:00:00 dst $cont dev vxlan-inf-1
+				sudo ip link add vxlan-inf-2 type vxlan id 1970 dev $mainInterface dstport 4789
+				sudo ip link set vxlan-inf-2 up
+				sudo bridge fdb append to 00:00:00:00:00:00 dst $domain2 dev vxlan-inf-2
 				#git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
 				#sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
 
@@ -104,12 +104,12 @@ else
 					read domain1
 					domain_config="fishy-domain-2"
 					while_var=1
-					sudo ip link add vxlan1 type vxlan id 1970 dev $mainInterface dstport 4789
-					sudo ip link set vxlan1 up
-					sudo bridge fdb append to 00:00:00:00:00:00 dst $domain1 dev vxlan1
-					sudo ip link add vxlan2 type vxlan id 1971 dev $mainInterface dstport 4789
-					sudo ip link set vxlan2 up
-					sudo bridge fdb append to 00:00:00:00:00:00 dst $cont dev vxlan2
+					sudo ip link add vxlan-inf-1 type vxlan id 1970 dev $mainInterface dstport 4789
+					sudo ip link set vxlan-inf-1 up
+					sudo bridge fdb append to 00:00:00:00:00:00 dst $domain1 dev vxlan-inf-1
+					sudo ip link add vxlan-inf-2 type vxlan id 1971 dev $mainInterface dstport 4789
+					sudo ip link set vxlan-inf-2 up
+					sudo bridge fdb append to 00:00:00:00:00:00 dst $cont dev vxlan-inf-2
 					#git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
 					#sudo $HOME/FISHY-Sandbox-development/$domain_config/config_interfaces.bash
 
@@ -120,14 +120,17 @@ else
 	done
 	sudo hostnamectl set-hostname $domain_config &> /dev/null
         sudo $HOME/L2S-M/K8s/provision/veth.bash
-        sudo ip link add vxlan3 type vxlan id 1973 dev $mainInterface dstport 4789
-        sudo ip link add vxlan4 type vxlan id 1974 dev $mainInterface dstport 4789
-        sudo ip link add vxlan5 type vxlan id 1975 dev $mainInterface dstport 4789
-        sudo ip link add vxlan6 type vxlan id 1976 dev $mainInterface dstport 4789
-        sudo ip link add vxlan7 type vxlan id 1977 dev $mainInterface dstport 4789
-        sudo ip link add vxlan8 type vxlan id 1978 dev $mainInterface dstport 4789
-        sudo ip link add vxlan9 type vxlan id 1979 dev $mainInterface dstport 4789
-        sudo ip link add vxlan10 type vxlan id 1980 dev $mainInterface dstport 4789
+
+        sudo ip link add vxlan1 type vxlan id 1972 dev $mainInterface dstport 4789
+        sudo ip link add vxlan2 type vxlan id 1973 dev $mainInterface dstport 4789
+        sudo ip link add vxlan3 type vxlan id 1974 dev $mainInterface dstport 4789
+        sudo ip link add vxlan4 type vxlan id 1975 dev $mainInterface dstport 4789
+        sudo ip link add vxlan5 type vxlan id 1976 dev $mainInterface dstport 4789
+        sudo ip link add vxlan6 type vxlan id 1977 dev $mainInterface dstport 4789
+        sudo ip link add vxlan7 type vxlan id 1978 dev $mainInterface dstport 4789
+        sudo ip link add vxlan8 type vxlan id 1979 dev $mainInterface dstport 4789
+        sudo ip link add vxlan9 type vxlan id 1980 dev $mainInterface dstport 4789
+        sudo ip link add vxlan10 type vxlan id 1981 dev $mainInterface dstport 4789
 fi
 
 sudo kubeadm init --config $HOME/FISHY-Sandbox-development/clusterConfig.yaml
@@ -148,45 +151,56 @@ sudo rm -r multus-cni
 
 sleep 20
 
+echo "Installing L2S-M in your K8s Cluster"
+
 #git clone L2S-M goes here
 kubectl create -f $HOME/L2S-M/K8s/interfaces_definitions/ &> /dev/null
 kubectl create -f $HOME/L2S-M/operator/deploy/mysql/ &> /dev/null
 kubectl create -f $HOME/L2S-M/operator/deploy/config/ &> /dev/null
 kubectl create -f $HOME/L2S-M/operator/deploy/deployOperator.yaml &> /dev/null
 
-sleep 120
+sleep 60
 
 kubectl create -f $HOME/L2S-M/operator/daemonset/l2-ps-amd64.yaml
 
 #sudo rm -r $HOME/FISHY-Sandbox-development
 #sudo rm -r $HOME/L2S-M-main
 
-sleep 30
+echo "Installing local SDN in your Cluster"
+
+sleep 20
+
+kubectl create -f $HOME/FISHY-Sandbox-development/cluster-sdn
+
+sleep 10
+
+RYUIP=$(kubectl get service/sdn-controller -o jsonpath="{.spec.clusterIP}")
+POD=$(kubectl get pod -l l2sm-component=l2-ps -o jsonpath="{.items[0].metadata.name}")
+kubectl exec $POD -- ovs-vsctl set-fail-mode brtun secure
+kubectl exec $POD -- ovs-vsctl set-controller brtun tcp:$RYUIP:6633
+
+echo "Installing the NED in your Cluster"
+
+kubectl create -f $HOME/FISHY-Sandbox-development/NED-v2/ned-networks
+kubectl create -f $HOME/FISHY-Sandbox-development/NED-v2/ned.yaml
+
+sleep 10
 
 if [[ "$domain_config" == "fishy-control-services" ]]; then
-        kubectl create -f $HOME/FISHY-Sandbox-development/fishy-control-services/sdn-cont/
-        sleep 15
-        for (( c=0; c<${#ifaces[@]}; c++ ));
-	do
-		if [[ $(/sbin/ip route | awk '/default/ { print $5 }') == ${ifaces[c]} ]]; then
-			mainInterface=${ifaces[c]}
-			break
-		fi
-		if [ $c -eq $((${#ifaces[@]} - 1)) ]; then
-			mainInterface=${ifaces[0]}
-		fi
-	done
-        IP=$(ip -f inet addr show $mainInterface | sed -En -e 's/.*inet ([0-9.]+).*/\1/p')
-        POD=$(kubectl get pod -l l2sm-component=l2-ps -o jsonpath="{.items[0].metadata.name}")
-        kubectl exec $POD -- ovs-vsctl set-fail-mode brtun secure
-        kubectl exec $POD -- ovs-vsctl set-controller brtun tcp:$IP:30036
+
+        IP=$(kubectl get nodes -o jsonpath='{ $.items[*].status.addresses[?(@.type=="InternalIP")].address }')
+        PODNED=$(kubectl get pod -l sia=ned -o jsonpath="{.items[0].metadata.name}")
+        kubectl exec $PODNED -- ovs-vsctl set-fail-mode brtun secure
+        kubectl exec $PODNED -- ovs-vsctl set-controller brtun tcp:$IP:30050
+
+        kubectl create -f $HOME/FISHY-Sandbox-development/NED-v2/sdn-ned
 #	git clone https://github.com/H2020-FISHY/IRO.git &> /dev/null
 #	kubectl apply -f $HOME/IRO/deployment/iro_kubernetes.yml
 #	sudo rm -r $HOME/IRO
 else
-        POD=$(kubectl get pod -l l2sm-component=l2-ps -o jsonpath="{.items[0].metadata.name}")
-        kubectl exec $POD -- ovs-vsctl set-fail-mode brtun secure
-        kubectl exec $POD -- ovs-vsctl set-controller brtun tcp:$cont:30036
+        PODNED=$(kubectl get pod -l sia=ned -o jsonpath="{.items[0].metadata.name}")
+        kubectl exec $PODNED -- ovs-vsctl set-fail-mode brtun secure
+        kubectl exec $PODNED -- ovs-vsctl set-controller brtun tcp:$cont:30050
 fi
 
 echo "Node $domain_config ready!"
