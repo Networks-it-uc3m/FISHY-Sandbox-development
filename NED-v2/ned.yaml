@@ -20,7 +20,7 @@ spec:
         command: ["/bin/sh", "-c"]
         args: ["ovsdb-server --remote=punix:/var/run/openvswitch/db.sock --remote=db:Open_vSwitch,Open_vSwitch,manager_options --pidfile=/var/run/openvswitch/ovsdb-server.pid 
          --detach && ovs-vsctl --db=unix:/var/run/openvswitch/db.sock --no-wait init && ovs-vswitchd --pidfile=/var/run/openvswitch/ovs-vswitchd.pid --detach && 
-         ip link set net1 &&
+         ip link set net1 up &&
          ip link set vxlan-inf-1 up && ip link set vxlan-inf-2 up && ip link set vxlan-inf-3 up && ip link set vxlan-inf-4 up &&
          ovs-vsctl add-br brtun && ip link set brtun up &&
          ovs-vsctl add-port brtun net1 &&
