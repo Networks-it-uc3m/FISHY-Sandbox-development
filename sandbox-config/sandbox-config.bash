@@ -28,6 +28,9 @@ if [[ "$mode" == "update" ]]; then
 	sudo systemctl restart docker
 fi
 
+git clone https://github.com/Networks-it-uc3m/FISHY-Sandbox-development.git &> /dev/null
+git clone https://github.com/Networks-it-uc3m/L2S-M.git &> /dev/null
+
 if [[ $(ip link show | grep -E vxlan) ]]; then
 	echo "Network interfaces are already configured: proceeding to install the Kubernetes Cluster:"
 	domain_config=$(hostname -s)
@@ -153,10 +156,10 @@ sleep 20
 
 echo "Installing L2S-M in your K8s Cluster"
 
-#git clone L2S-M goes here
 kubectl create -f $HOME/L2S-M/K8s/interfaces_definitions/ &> /dev/null
 kubectl create -f $HOME/L2S-M/operator/deploy/mysql/ &> /dev/null
 kubectl create -f $HOME/L2S-M/operator/deploy/config/ &> /dev/null
+kubectl label nodes $domain_config dedicated=master
 kubectl create -f $HOME/L2S-M/operator/deploy/deployOperator.yaml &> /dev/null
 
 sleep 60
@@ -202,5 +205,8 @@ else
         kubectl exec $PODNED -- ovs-vsctl set-fail-mode brtun secure
         kubectl exec $PODNED -- ovs-vsctl set-controller brtun tcp:$cont:30050
 fi
+
+sudo rm -r $HOME/L2S-M
+sudo rm -r $HOME/FISHY-Sandbox-development
 
 echo "Node $domain_config ready!"
